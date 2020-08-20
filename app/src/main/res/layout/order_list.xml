@@ -1,6 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp">
 
-</LinearLayout>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:elevation="7dp"
+        app:cardElevation="7dp"
+        android:layout_margin="5dp"
+        android:background="@color/black"
+        android:foreground="@android:color/transparent"
+        app:cardCornerRadius="7dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittextborder"
+            android:backgroundTint="@color/white"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/orderStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:paddingStart="15dp"
+                android:paddingTop="5dp"
+                android:background="@drawable/viewborder"
+                android:paddingBottom="5dp"
+                android:paddingEnd="15dp"
+                android:layout_gravity="center|left"
+                android:gravity="center|left"
+                android:text="Order Status"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppinsmedium"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/orderNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"
+                android:layout_gravity="center"
+                android:gravity="center|left"
+                android:text="13215456"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppinsmedium"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/orderDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"
+                android:text="orderDate"
+                android:layout_gravity="center"
+                android:gravity="center|left"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppinsmedium"/>
+
+            <TextView
+                android:id="@+id/orderAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"
+                android:layout_gravity="center"
+                android:gravity="center|left"
+                android:text="2000"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppinsmedium"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray"/>
+
+            <TextView
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="View"
+                android:textSize="17sp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:fontFamily="@font/poppinsmedium"
+                android:textColor="@color/black"
+                android:layout_weight="1"
+                android:drawablePadding="10dp"
+                android:padding="5dp"/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
+
+

@@ -1,66 +1,126 @@
 package com.ninjacart.Fragment;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.ninjacart.Activity.MainPage;
+import com.ninjacart.Adapter.CartAdapter;
+import com.ninjacart.Adapter.OrderAdapter;
+import com.ninjacart.Extra.DetectConnection;
+import com.ninjacart.Model.AllList;
+import com.ninjacart.Model.CartResponse;
+import com.ninjacart.Model.OrderResponse;
 import com.ninjacart.R;
+import com.ninjacart.Retrofit.Api;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link OrderHistory#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.security.auth.login.LoginException;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import es.dmoral.toasty.Toasty;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+
 public class OrderHistory extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    View view;
+    @BindView(R.id.categoryRecyclerview)
+    RecyclerView recyclerView;
+    @BindView(R.id.noCategorytxt)
+    TextView noCategorytxt;
+    @BindView(R.id.linearLayout)
+    RelativeLayout linearLayout;
+    List<OrderResponse> orderResponseList = new ArrayList<>();
+    OrderAdapter adapter;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
-    public OrderHistory() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment OrderHistory.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static OrderHistory newInstance(String param1, String param2) {
-        OrderHistory fragment = new OrderHistory();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_cart_list, container, false);
+        ButterKnife.bind(this, view);
+
+        InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        in.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+
+        return view;
+
+    }
+
+    public void onStart() {
+        super.onStart();
+        Log.e("onStart", "called");
+        ((MainPage) getActivity()).lockUnlockDrawer(1);
+        if (DetectConnection.checkInternetConnection(getActivity())) {
+            getOrderList();
+        } else {
+            Toasty.warning(getActivity(), "No Internet Connection", Toasty.LENGTH_SHORT, true).show();
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_order_history, container, false);
+    private void getOrderList() {
+
+        ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Please wait...");
+        progressDialog.setTitle("History is Loading");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+
+        orderResponseList.clear();
+        recyclerView.clearOnScrollListeners();
+
+        Call<AllList> call = Api.getClient().getOrderList(MainPage.userId);
+        call.enqueue(new Callback<AllList>() {
+            @Override
+            public void onResponse(Call<AllList> call, Response<AllList> response) {
+
+                AllList allList = response.body();
+                orderResponseList = allList.getOrderResponseList();
+                if (orderResponseList.size()>0){
+                    progressDialog.dismiss();
+                    adapter = new OrderAdapter(getActivity(), orderResponseList);
+                    recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
+                    recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    adapter.notifyItemInserted(orderResponseList.size() - 1);
+                    recyclerView.setHasFixedSize(true);
+
+                } else {
+                    progressDialog.dismiss();
+                    noCategorytxt.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<AllList> call, Throwable t) {
+                progressDialog.dismiss();
+                Log.e("orderError", ""+t.getMessage());
+            }
+        });
+
+
     }
 }

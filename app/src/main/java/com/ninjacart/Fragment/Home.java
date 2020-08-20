@@ -4,6 +4,10 @@ import android.os.Bundle;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -14,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.ninjacart.Activity.MainPage;
+import com.ninjacart.Adapter.ProductAdapter;
 import com.ninjacart.Extra.DetectConnection;
 import com.ninjacart.Model.AllList;
 import com.ninjacart.Model.ProductResponse;
@@ -42,6 +47,7 @@ public class Home extends Fragment {
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
     List<ProductResponse> productResponseList = new ArrayList<>();
+    public static ProductAdapter adapter;
 
 
     @Override
@@ -50,7 +56,7 @@ public class Home extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
-        MainPage.title.setText("");
+        //MainPage.title.setText("");
 
         return view;
 
@@ -59,7 +65,7 @@ public class Home extends Fragment {
     public void onStart() {
         super.onStart();
         Log.e("onStart", "called");
-        MainPage.title.setVisibility(View.VISIBLE);
+       // MainPage.title.setVisibility(View.VISIBLE);
         ((MainPage) getActivity()).lockUnlockDrawer(0);
         if (DetectConnection.checkInternetConnection(getActivity())) {
             getProductList();
@@ -70,7 +76,7 @@ public class Home extends Fragment {
 
     private void getProductList() {
 
-        Call<AllList> call = Api.getClient().getProductList(MainPage.userId);
+        Call<AllList> call = Api.getClient().getProductList("1");
         call.enqueue(new Callback<AllList>() {
             @Override
             public void onResponse(Call<AllList> call, Response<AllList> response) {
@@ -79,10 +85,20 @@ public class Home extends Fragment {
                 productResponseList = allList.getProductResponseList();
 
                 if (productResponseList.size()==0){
-
+                    Toasty.normal(getActivity(), "No Product Found", Toasty.LENGTH_SHORT).show();
+                    emptyProductLayout.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
                 }else {
 
+                    adapter = new ProductAdapter(getActivity(), productResponseList);
+                    recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setHasFixedSize(true);
+                    adapter.notifyItemInserted(productResponseList.size() - 1);
+                    adapter.notifyDataSetChanged();
 
+                    recyclerView.setVisibility(View.VISIBLE);
+                    emptyProductLayout.setVisibility(View.GONE);
 
 
                 }
@@ -92,6 +108,8 @@ public class Home extends Fragment {
             @Override
             public void onFailure(Call<AllList> call, Throwable t) {
                 Log.e("productError", ""+t.getMessage());
+                emptyProductLayout.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
             }
         });
 

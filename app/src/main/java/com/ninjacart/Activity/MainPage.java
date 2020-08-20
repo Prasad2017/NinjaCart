@@ -18,10 +18,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.wallet.Cart;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.ninjacart.Extra.Common;
+import com.ninjacart.Fragment.CartList;
 import com.ninjacart.Fragment.Home;
+import com.ninjacart.Fragment.OrderHistory;
 import com.ninjacart.R;
 
 import butterknife.BindView;
@@ -65,12 +68,39 @@ public class MainPage extends AppCompatActivity {
                         loadFragment(new Home(), false);
                         break;
 
+                    case R.id.cart:
+                        loadFragment(new CartList(), true);
+                        break;
+
+                    case R.id.history:
+                        loadFragment(new OrderHistory(), true);
+                        break;
 
                 }
 
                 return false;
             }
         });
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home:
+                        loadFragment(new Home(), false);
+                        break;
+                    case R.id.cart:
+                        loadFragment(new CartList(), true);
+                        break;
+                    case R.id.history:
+                        loadFragment(new OrderHistory(), true);
+                        break;
+                }
+                return true;
+            }
+        });
+
+
 
     }
 

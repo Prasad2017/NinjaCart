@@ -8,15 +8,43 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface ApiInterface {
 
     @FormUrlEncoded
-    @POST("/androidApp/Transporter/Login.php")
+    @POST("/androidApp/Login.php")
     Call<LoginResponse> Login(@Field("mobile") String mobile);
 
 
-    @GET("")
-    Call<AllList> getProductList(String userId);
+    @GET("/androidApp/productList.php")
+    Call<AllList> getProductList(@Query("userId") String userId);
+
+
+    @FormUrlEncoded
+    @POST("/androidApp/addToCart.php")
+    Call<LoginResponse> addToCart(@Field("productId") String productId,
+                                  @Field("userId") String userId,
+                                  @Field("quantity") String quantity);
+
+
+    @FormUrlEncoded
+    @POST("/androidApp/deleteCart.php")
+    Call<LoginResponse> deleteCart(@Field("productId") String productId,
+                                   @Field("userId") String userId);
+
+
+    @GET("/androidApp/getCartList.php")
+    Call<AllList> getCartList(@Query("userId") String userId);
+
+
+    @POST("/androidApp/FinalOrder.php")
+    Call<LoginResponse> placeOrder(@Field("userId") String userId);
+
+
+    @POST("/androidApp/getOrderList.php")
+    Call<AllList> getOrderList(@Field("userId") String userId);
+
+
 
 }

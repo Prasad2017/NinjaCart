@@ -1,64 +1,127 @@
 package com.ninjacart.Fragment;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.ninjacart.R;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CartList#newInstance} factory method to
- * create an instance of this fragment.
- *
- */
+import com.ninjacart.Activity.Login;
+import com.ninjacart.Activity.MainPage;
+import com.ninjacart.Adapter.CartAdapter;
+import com.ninjacart.Extra.DetectConnection;
+import com.ninjacart.Model.AllList;
+import com.ninjacart.Model.CartResponse;
+import com.ninjacart.R;
+import com.ninjacart.Retrofit.Api;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import es.dmoral.toasty.Toasty;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+
 public class CartList extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    View view;
+    @BindView(R.id.categoryRecyclerview)
+    RecyclerView recyclerView;
+    @BindView(R.id.noCategorytxt)
+    TextView noCategorytxt;
+    @BindView(R.id.linearLayout)
+    RelativeLayout linearLayout;
+    List<CartResponse> cartResponseList = new ArrayList<>();
+    public static CartAdapter adapter;
+    String customerType, customerId,customerName, customerState;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CartList.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CartList newInstance(String param1, String param2) {
-        CartList fragment = new CartList();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public CartList() {
-        // Required empty public constructor
-    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_cart_list, container, false);
+        ButterKnife.bind(this, view);
+        InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        in.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+
+        return view;
+
+    }
+
+    @OnClick({R.id.checkout})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.checkout:
+                ((MainPage) getActivity()).loadFragment(new Checkout(), true);
+                break;
+
+        }
+
+    }
+
+    public void onStart() {
+        super.onStart();
+        Log.e("onStart", "called");
+        // MainPage.title.setVisibility(View.VISIBLE);
+        ((MainPage) getActivity()).lockUnlockDrawer(1);
+        if (DetectConnection.checkInternetConnection(getActivity())) {
+            getCartList();
+        } else {
+            Toasty.warning(getActivity(), "No Internet Connection", Toasty.LENGTH_SHORT, true).show();
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cart_list, container, false);
+    private void getCartList() {
+
+        Call<AllList> call = Api.getClient().getCartList(MainPage.userId);
+        call.enqueue(new Callback<AllList>() {
+            @Override
+            public void onResponse(Call<AllList> call, Response<AllList> response) {
+
+                AllList allList = response.body();
+                cartResponseList = allList.getCartResponseList();
+
+                if (cartResponseList.size()>0){
+                    noCategorytxt.setVisibility(View.VISIBLE);
+                    linearLayout.setVisibility(View.GONE);
+                } else {
+
+                    adapter = new CartAdapter(getActivity(), cartResponseList);
+                    recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
+                    recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    adapter.notifyItemInserted(cartResponseList.size() - 1);
+                    recyclerView.setHasFixedSize(true);
+
+                    linearLayout.setVisibility(View.VISIBLE);
+                    noCategorytxt.setVisibility(View.GONE);
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<AllList> call, Throwable t) {
+                Log.e("cartError", ""+t.getMessage());
+            }
+        });
+
+
     }
 }
