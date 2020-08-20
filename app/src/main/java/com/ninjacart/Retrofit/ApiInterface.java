@@ -40,7 +40,8 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("/androidApp/FinalOrder.php")
-    Call<LoginResponse> placeOrder(@Field("userId") String userId);
+    Call<LoginResponse> placeOrder(@Field("userId") String userId,
+                                   @Field("subAmount") String subAmount);
 
 
     @GET("/androidApp/getOrderList.php")

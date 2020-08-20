@@ -37,7 +37,7 @@
                 android:paddingEnd="15dp"
                 android:layout_gravity="center|left"
                 android:gravity="center|left"
-                android:text="Order Status"
+                android:hint="Order Status"
                 android:textColor="@color/white"
                 android:fontFamily="@font/poppinsmedium"
                 android:textStyle="bold"/>
@@ -52,7 +52,7 @@
                 android:padding="5dp"
                 android:layout_gravity="center"
                 android:gravity="center|left"
-                android:text="13215456"
+                android:hint="13215456"
                 android:textColor="@color/black"
                 android:fontFamily="@font/poppinsmedium"
                 android:textStyle="bold"/>
@@ -65,7 +65,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:padding="5dp"
-                android:text="orderDate"
+                android:hint="orderDate"
                 android:layout_gravity="center"
                 android:gravity="center|left"
                 android:textColor="@color/black"
@@ -81,7 +81,7 @@
                 android:padding="5dp"
                 android:layout_gravity="center"
                 android:gravity="center|left"
-                android:text="2000"
+                android:hint="2000"
                 android:textColor="@color/black"
                 android:fontFamily="@font/poppinsmedium"/>
 

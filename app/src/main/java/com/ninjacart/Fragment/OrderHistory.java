@@ -100,13 +100,18 @@ public class OrderHistory extends Fragment {
                 AllList allList = response.body();
                 orderResponseList = allList.getOrderResponseList();
                 if (orderResponseList.size()>0){
+
                     progressDialog.dismiss();
+
                     adapter = new OrderAdapter(getActivity(), orderResponseList);
                     recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
                     adapter.notifyItemInserted(orderResponseList.size() - 1);
                     recyclerView.setHasFixedSize(true);
+
+                    noCategorytxt.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
 
                 } else {
                     progressDialog.dismiss();

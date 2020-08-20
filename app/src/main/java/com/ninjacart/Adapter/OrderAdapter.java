@@ -46,9 +46,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
 
         OrderResponse orderResponse = orderResponseList.get(position);
 
-        holder.textViews.get(1).setText(orderResponseList.get(position).getOrder_number());
-        holder.textViews.get(2).setText(orderResponseList.get(position).getOrder_date());
-        holder.textViews.get(3).setText(MainPage.currency+" "+orderResponseList.get(position).getGrand_amount());
+        holder.textViews.get(1).setText(""+orderResponseList.get(position).getOrder_number());
+        holder.textViews.get(2).setText(""+orderResponseList.get(position).getOrder_date());
+        holder.textViews.get(3).setText(""+MainPage.currency+" "+orderResponseList.get(position).getGrand_amount());
 
         holder.textViews.get(0).setText(orderResponseList.get(position).getOrder_status());
 

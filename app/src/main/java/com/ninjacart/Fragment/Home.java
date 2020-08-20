@@ -66,6 +66,8 @@ public class Home extends Fragment {
         ButterKnife.bind(this, view);
         //MainPage.title.setText("");
 
+        MainPage.bottomNavigationView.setSelectedItemId(R.id.home);
+
         searchProduct.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

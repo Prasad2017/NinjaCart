@@ -74,7 +74,7 @@ public class Checkout extends Fragment {
                 progressDialog.show();
                 progressDialog.setCancelable(false);
 
-                Call<LoginResponse> call = Api.getClient().placeOrder(MainPage.userId);
+                Call<LoginResponse> call = Api.getClient().placeOrder(MainPage.userId, ""+MyCart.adapter.totalAmount);
                 call.enqueue(new Callback<LoginResponse>() {
                     @Override
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
