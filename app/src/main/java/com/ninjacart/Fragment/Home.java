@@ -64,9 +64,7 @@ public class Home extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
-        //MainPage.title.setText("");
 
-        MainPage.bottomNavigationView.setSelectedItemId(R.id.home);
 
         searchProduct.addTextChangedListener(new TextWatcher() {
             @Override
