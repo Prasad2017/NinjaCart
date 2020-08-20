@@ -1,7 +1,6 @@
 package com.ninjacart.Adapter;
 
 import android.content.Context;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +10,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ninjacart.Activity.MainPage;
-import com.ninjacart.Fragment.CartList;
-import com.ninjacart.Fragment.Home;
+import com.ninjacart.Fragment.MyCart;
 import com.ninjacart.Model.CartResponse;
 import com.ninjacart.Model.LoginResponse;
 import com.ninjacart.R;
@@ -73,8 +70,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViwHolder> {
 
 
         }else
+            holder.totalAmount.setVisibility(View.GONE);
 
-            holder.textView.get(0).setText(cartResponseList.get(position).getProductName());
+        holder.textView.get(0).setText(cartResponseList.get(position).getProductName());
         holder.textView.get(1).setText(MainPage.currency +" "+cartResponseList.get(position).getProductSellPrice()+"/"+cartResponseList.get(position).getProductUnit());
         holder.textView.get(2).setText(MainPage.currency+" "+cartResponseList.get(position).getProductMrp()+"/"+cartResponseList.get(position).getProductUnit());
         holder.textView.get(4).setText(""+cartResponseList.get(position).getProductQuantity());
@@ -112,7 +110,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViwHolder> {
                 if (quantity>=Integer.parseInt(cartResponseList.get(position).getMinPurchaseQty())){
 
                     holder.textView.get(4).setText(""+quantity);
-                    CartList.adapter.notifyDataSetChanged();
+                    MyCart.adapter.notifyDataSetChanged();
                     //  Home.adapter.notifyItemChanged(Integer.parseInt(productResponseList.get(position).getProductId()));
 
                     Call<LoginResponse> call = Api.getClient().deleteCart(cartResponseList.get(position).getProductId(), "1");
@@ -136,7 +134,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViwHolder> {
 
                 } else {
                     holder.textView.get(4).setText("0");
-                    CartList.adapter.notifyDataSetChanged();
+                    MyCart.adapter.notifyDataSetChanged();
                     //  Home.adapter.notifyItemChanged(Integer.parseInt(productResponseList.get(position).getProductId()));
                 }
 
@@ -171,13 +169,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViwHolder> {
 
                             if (response.body().getSuccess().equalsIgnoreCase("true")){
                                 Toasty.normal(context, ""+response.body().getMessage(), Toasty.LENGTH_SHORT).show();
-                                CartList.adapter.notifyDataSetChanged();
-                                CartList.adapter.notifyItemChanged(Integer.parseInt(cartResponseList.get(position).getProductId()));
-                                ((MainPage) context).loadFragment(new CartList(), true);
+                                MyCart.adapter.notifyDataSetChanged();
+                                MyCart.adapter.notifyItemChanged(Integer.parseInt(cartResponseList.get(position).getProductId()));
+                                ((MainPage) context).loadFragment(new MyCart(), true);
                             } else if (response.body().getSuccess().equalsIgnoreCase("false")){
                                 Toasty.normal(context, ""+response.body().getMessage(), Toasty.LENGTH_SHORT).show();
-                                CartList.adapter.notifyDataSetChanged();
-                                CartList.adapter.notifyItemChanged(Integer.parseInt(cartResponseList.get(position).getProductId()));
+                                MyCart.adapter.notifyDataSetChanged();
+                                MyCart.adapter.notifyItemChanged(Integer.parseInt(cartResponseList.get(position).getProductId()));
                             }
 
                         }
@@ -190,8 +188,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViwHolder> {
 
                 } else {
                     holder.textView.get(4).setText("0");
-                    CartList.adapter.notifyDataSetChanged();
-                    CartList.adapter.notifyItemChanged(Integer.parseInt(cartResponseList.get(position).getProductId()));
+                    MyCart.adapter.notifyDataSetChanged();
+                    MyCart.adapter.notifyItemChanged(Integer.parseInt(cartResponseList.get(position).getProductId()));
                 }
 
             }

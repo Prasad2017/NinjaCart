@@ -62,7 +62,7 @@
                     android:paddingRight="5dp"
                     android:paddingTop="5dp"
                     android:layout_gravity="center"
-                    android:text="Prasad Sawant"
+                    android:text="Fresh Root"
                     android:textColor="@color/black"
                     android:textColorHint="@color/black"
                     android:textSize="12sp" />
@@ -80,7 +80,7 @@
                     android:paddingBottom="5dp"
                     android:layout_marginTop="3dp"
                     android:layout_gravity="center"
-                    android:text="sawantp500@gmail.com"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textColorHint="@color/black"
                     android:textSize="11sp" />

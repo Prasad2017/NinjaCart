@@ -128,49 +128,9 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            whatever:boxCornerRadiusBottomEnd="5dp"
-            whatever:boxCornerRadiusBottomStart="5dp"
-            whatever:boxCornerRadiusTopEnd="5dp"
-            whatever:boxCornerRadiusTopStart="5dp"
-            android:gravity="center"
-            whatever:boxStrokeColor="@color/light_black"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:textColorHint="@color/light_black">
-
-            <com.andreabaccega.widget.FormEditText
-                android:id="@+id/totalAmount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/rupee"
-                android:drawablePadding="10dp"
-                android:drawableTint="@color/black"
-                android:fontFamily="@font/poppinsregular"
-                android:hint="Total Amount"
-                android:imeOptions="actionNext"
-                android:inputType="numberDecimal"
-                android:digits="0123456789"
-                android:paddingStart="15dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:paddingEnd="10dp"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:textColorHint="@color/light_black"
-                android:textSize="15sp"
-                tools:ignore="HardcodedText"
-                whatever:emptyErrorString="Please Fill This"
-                whatever:testErrorString="Enter Valid Amount" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
 
         <TextView
-            android:id="@+id/placeOrder"
+            android:id="@+id/submit"
             android:layout_width="200dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
@@ -182,7 +142,7 @@
             android:fontFamily="@font/poppinsmedium"
             android:gravity="center"
             android:padding="5dp"
-            android:text="Place Order"
+            android:text="Update"
             android:textColor="@color/white"
             android:textSize="20sp"
             tools:ignore="HardcodedText,RtlHardcoded,UnusedAttribute" />

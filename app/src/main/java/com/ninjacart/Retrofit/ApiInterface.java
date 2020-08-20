@@ -34,17 +34,24 @@ public interface ApiInterface {
                                    @Field("userId") String userId);
 
 
-    @GET("/androidApp/getCartList.php")
+    @GET("/androidApp/viewCart.php")
     Call<AllList> getCartList(@Query("userId") String userId);
 
 
+    @FormUrlEncoded
     @POST("/androidApp/FinalOrder.php")
     Call<LoginResponse> placeOrder(@Field("userId") String userId);
 
 
-    @POST("/androidApp/getOrderList.php")
-    Call<AllList> getOrderList(@Field("userId") String userId);
+    @GET("/androidApp/getOrderList.php")
+    Call<AllList> getOrderList(@Query("userId") String userId);
 
+    @FormUrlEncoded
+    @POST("/androidApp/updateProfile.php")
+    Call<LoginResponse> updateProfile(@Field("userId") String userId,
+                                      @Field("customerName") String customerName,
+                                      @Field("customerMobile") String customerMobile,
+                                      @Field("customerAddress") String customerAddress);
 
 
 }

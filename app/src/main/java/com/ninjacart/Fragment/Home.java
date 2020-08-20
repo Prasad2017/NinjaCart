@@ -11,12 +11,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.andreabaccega.widget.FormEditText;
 import com.ninjacart.Activity.MainPage;
 import com.ninjacart.Adapter.ProductAdapter;
 import com.ninjacart.Extra.DetectConnection;
@@ -25,6 +28,8 @@ import com.ninjacart.Model.ProductResponse;
 import com.ninjacart.R;
 import com.ninjacart.Retrofit.Api;
 import com.ninjacart.Retrofit.ApiInterface;
+
+import org.apache.poi.ss.formula.functions.T;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +51,10 @@ public class Home extends Fragment {
     LinearLayout emptyProductLayout;
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.searchProduct)
+    FormEditText searchProduct;
     List<ProductResponse> productResponseList = new ArrayList<>();
+    List<ProductResponse> searchProductResponseList = new ArrayList<>();
     public static ProductAdapter adapter;
 
 
@@ -58,7 +66,73 @@ public class Home extends Fragment {
         ButterKnife.bind(this, view);
         //MainPage.title.setText("");
 
+        searchProduct.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                try{
+
+                    searchProductList(editable.toString());
+
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
         return view;
+
+    }
+
+    private void searchProductList(String s) {
+
+        searchProductResponseList = new ArrayList<>();
+        searchProductResponseList.clear();
+
+        if (s.length() > 0) {
+
+            for (int i = 0; i < productResponseList.size(); i++)
+                if (productResponseList.get(i).getProductName().toLowerCase().contains(s.toLowerCase().trim())) {
+                    searchProductResponseList.add(productResponseList.get(i));
+                }
+
+            if (searchProductResponseList.size() < 1) {
+                emptyProductLayout.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+
+            } else {
+                emptyProductLayout.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+            }
+        } else {
+
+            searchProductResponseList = new ArrayList<>();
+            for (int i = 0; i < productResponseList.size(); i++) {
+                searchProductResponseList.add(productResponseList.get(i));
+            }
+
+            emptyProductLayout.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+
+        }
+
+        adapter = new ProductAdapter(getActivity(), searchProductResponseList);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
+        recyclerView.setAdapter(adapter);
+        recyclerView.setHasFixedSize(true);
+        adapter.notifyItemInserted(searchProductResponseList.size() - 1);
+        adapter.notifyDataSetChanged();
 
     }
 

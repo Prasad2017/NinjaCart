@@ -10,7 +10,7 @@
         android:name=".Applications.SmsVerificationApp"
         android:allowBackup="true"
         android:allowClearUserData="true"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:requestLegacyExternalStorage="true"

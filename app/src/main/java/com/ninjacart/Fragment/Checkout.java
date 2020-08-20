@@ -42,8 +42,21 @@ public class Checkout extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_checkout, container, false);
         ButterKnife.bind(this, view);
+
+        MainPage.title.setText("Buy Now");
+
         InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         in.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+        try{
+
+            formEditTexts.get(0).setText(MainPage.userName);
+            formEditTexts.get(1).setText(MainPage.userNumber);
+            formEditTexts.get(3).setText(""+MyCart.adapter.totalAmount);
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
         return view;
 
@@ -69,6 +82,7 @@ public class Checkout extends Fragment {
                         if (response.body().getSuccess().equalsIgnoreCase("true")){
                             progressDialog.dismiss();
                             Toasty.success(getActivity(), ""+response.body().getMessage(), Toasty.LENGTH_SHORT).show();
+                            ((MainPage) getActivity()).loadFragment(new Home(), true);
                         } else if (response.body().getSuccess().equalsIgnoreCase("false")){
                             progressDialog.dismiss();
                             Toasty.error(getActivity(), ""+response.body().getMessage(), Toasty.LENGTH_SHORT).show();

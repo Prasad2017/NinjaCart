@@ -45,7 +45,7 @@
         android:padding="5dp"
         android:textSize="18sp"
         android:layout_centerInParent="true"
-        android:text="No Product Found"
+        android:text="No Order History Found"
         android:textColor="@color/black"
         android:fontFamily="@font/poppinsmedium"
         android:layout_gravity="center"

@@ -18,11 +18,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.gms.wallet.Cart;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.ninjacart.Extra.Common;
-import com.ninjacart.Fragment.CartList;
+import com.ninjacart.Fragment.MyCart;
 import com.ninjacart.Fragment.Home;
 import com.ninjacart.Fragment.OrderHistory;
 import com.ninjacart.R;
@@ -38,7 +37,7 @@ public class MainPage extends AppCompatActivity {
     public static DrawerLayout drawerLayout;
     public static TextView title, cartCount;
     public static LinearLayout toolbarContainer;
-    public static String userId, cartId, currency = "₹";
+    public static String userId, cartId, currency = "₹", userName, userNumber;
     boolean doubleBackToExitPressedOnce = false;
     @BindView(R.id.navigationView)
     NavigationView navigationView;
@@ -69,7 +68,7 @@ public class MainPage extends AppCompatActivity {
                         break;
 
                     case R.id.cart:
-                        loadFragment(new CartList(), true);
+                        loadFragment(new MyCart(), true);
                         break;
 
                     case R.id.history:
@@ -90,7 +89,7 @@ public class MainPage extends AppCompatActivity {
                         loadFragment(new Home(), false);
                         break;
                     case R.id.cart:
-                        loadFragment(new CartList(), true);
+                        loadFragment(new MyCart(), true);
                         break;
                     case R.id.history:
                         loadFragment(new OrderHistory(), true);
@@ -164,10 +163,12 @@ public class MainPage extends AppCompatActivity {
             menu.setVisibility(View.GONE);
             bottomNavigationView.setVisibility(View.GONE);
             back.setVisibility(View.VISIBLE);
+            title.setVisibility(View.VISIBLE);
         } else {
             menu.setVisibility(View.VISIBLE);
             bottomNavigationView.setVisibility(View.VISIBLE);
             back.setVisibility(View.GONE);
+            title.setVisibility(View.GONE);
         }
 
     }

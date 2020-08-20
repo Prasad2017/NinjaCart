@@ -200,7 +200,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.Connecti
         switch (view.getId()) {
             case R.id.submit:
                 if (formEditText.testValidity()) {
-                    sendOTP(formEditText.getText().toString().trim());
+                    CheckMobile(formEditText.getText().toString().trim());
                 }
                 break;
 
@@ -231,7 +231,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.Connecti
         }
     }
 
-    private void login() {
+    private void CheckMobile(String mobile) {
 
         ProgressDialog progressDialog = new ProgressDialog(Login.this);
         progressDialog.setMessage("Loading...");
@@ -245,6 +245,44 @@ public class Login extends AppCompatActivity implements GoogleApiClient.Connecti
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
 
+                if (response.body().getSuccess().equalsIgnoreCase("true")) {
+                    progressDialog.dismiss();
+                    sendOTP(formEditText.getText().toString().trim());
+                } else if (response.body().getSuccess().equalsIgnoreCase("false")) {
+                    progressDialog.dismiss();
+                    Toasty.error(Login.this, ""+response.body().getMessage(), Toasty.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                Log.e("Error", ""+t.getMessage());
+            }
+        });
+
+    }
+
+    private void login() {
+
+        ProgressDialog progressDialog = new ProgressDialog(Login.this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.setTitle("OTP is verifying");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+
+        Call<LoginResponse> call = Api.getClient().Login(formEditText.getText().toString().trim());
+        call.enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+
+                if (response.body().getSuccess().equalsIgnoreCase("true")) {
+                    progressDialog.dismiss();
+                    Toasty.error(Login.this, ""+response.body().getMessage(), Toasty.LENGTH_SHORT).show();
+                } else if (response.body().getSuccess().equalsIgnoreCase("false")) {
+                    progressDialog.dismiss();
+                    Toasty.error(Login.this, ""+response.body().getMessage(), Toasty.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -292,6 +330,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.Connecti
                         linearLayouts.get(1).setVisibility(View.VISIBLE);
                         Toast.makeText(Login.this, "OTP sent successfully", Toast.LENGTH_SHORT).show();
                         startSMSListener();
+
                     } else {
                         progressDialog.dismiss();
 

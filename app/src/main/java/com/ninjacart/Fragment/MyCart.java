@@ -37,7 +37,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class CartList extends Fragment {
+public class MyCart extends Fragment {
 
     View view;
     @BindView(R.id.categoryRecyclerview)
@@ -56,6 +56,9 @@ public class CartList extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_cart_list, container, false);
         ButterKnife.bind(this, view);
+
+        MainPage.title.setText("My Cart");
+
         InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         in.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
@@ -89,7 +92,7 @@ public class CartList extends Fragment {
 
     private void getCartList() {
 
-        Call<AllList> call = Api.getClient().getCartList(MainPage.userId);
+        Call<AllList> call = Api.getClient().getCartList("1");
         call.enqueue(new Callback<AllList>() {
             @Override
             public void onResponse(Call<AllList> call, Response<AllList> response) {
@@ -97,7 +100,7 @@ public class CartList extends Fragment {
                 AllList allList = response.body();
                 cartResponseList = allList.getCartResponseList();
 
-                if (cartResponseList.size()>0){
+                if (cartResponseList.size()<1){
                     noCategorytxt.setVisibility(View.VISIBLE);
                     linearLayout.setVisibility(View.GONE);
                 } else {

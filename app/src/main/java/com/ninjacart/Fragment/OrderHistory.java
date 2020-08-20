@@ -59,6 +59,8 @@ public class OrderHistory extends Fragment {
         view = inflater.inflate(R.layout.fragment_cart_list, container, false);
         ButterKnife.bind(this, view);
 
+        MainPage.title.setText("My Order");
+
         InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         in.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
@@ -82,7 +84,7 @@ public class OrderHistory extends Fragment {
 
         ProgressDialog progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Please wait...");
-        progressDialog.setTitle("History is Loading");
+        progressDialog.setTitle("Searching order history");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
         progressDialog.setCancelable(false);
