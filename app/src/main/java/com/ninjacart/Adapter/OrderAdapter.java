@@ -2,6 +2,8 @@ package com.ninjacart.Adapter;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ninjacart.Activity.MainPage;
+import com.ninjacart.Fragment.OrderDetails;
 import com.ninjacart.Model.OrderResponse;
 import com.ninjacart.R;
 
@@ -50,17 +53,39 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         holder.textViews.get(2).setText(""+orderResponseList.get(position).getOrder_date());
         holder.textViews.get(3).setText(""+MainPage.currency+" "+orderResponseList.get(position).getGrand_amount());
 
-        holder.textViews.get(0).setText(orderResponseList.get(position).getOrder_status());
+        try {
 
-        if (orderResponseList.get(position).getOrder_status().equalsIgnoreCase("order_raised")){
-            holder.textViews.get(0).setBackgroundTintList(context.getResources().getColorStateList(R.color.yellow_800));
-        } else if (orderResponseList.get(position).getOrder_status().equalsIgnoreCase("order_accepted")){
-            holder.textViews.get(0).setBackgroundTintList(context.getResources().getColorStateList(R.color.green_600));
-        } else if (orderResponseList.get(position).getOrder_status().equalsIgnoreCase("order_dispatched")){
-            holder.textViews.get(0).setBackgroundTintList(context.getResources().getColorStateList(R.color.green_700));
-        } else if (orderResponseList.get(position).getOrder_status().equalsIgnoreCase("order_delivered")){
-            holder.textViews.get(0).setBackgroundTintList(context.getResources().getColorStateList(R.color.green_800));
+            if (orderResponseList.get(position).getOrder_status().equalsIgnoreCase("order_raised")) {
+                holder.textViews.get(0).setBackgroundTintList(context.getResources().getColorStateList(R.color.yellow_800));
+                holder.textViews.get(0).setText("Order Placed");
+            } else if (orderResponseList.get(position).getOrder_status().equalsIgnoreCase("order_accepted")) {
+                holder.textViews.get(0).setBackgroundTintList(context.getResources().getColorStateList(R.color.green_600));
+                holder.textViews.get(0).setText("Order Accepted");
+            } else if (orderResponseList.get(position).getOrder_status().equalsIgnoreCase("order_dispatched")) {
+                holder.textViews.get(0).setBackgroundTintList(context.getResources().getColorStateList(R.color.green_700));
+                holder.textViews.get(0).setText("Order Dispatched");
+            } else if (orderResponseList.get(position).getOrder_status().equalsIgnoreCase("order_delivered")) {
+                holder.textViews.get(0).setBackgroundTintList(context.getResources().getColorStateList(R.color.green_800));
+                holder.textViews.get(0).setText("Order Completed");
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
         }
+
+        holder.textViews.get(4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                OrderDetails orderDetails = new OrderDetails();
+                Bundle bundle = new Bundle();
+                bundle.putString("orderId", orderResponseList.get(position).getFinal_order_pk());
+                Log.e("orderId", ""+orderResponseList.get(position).getFinal_order_pk());
+                orderDetails.setArguments(bundle);
+                ((MainPage) context).loadFragment(orderDetails, true);
+
+            }
+        });
 
     }
 
@@ -71,7 +96,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        @BindViews({R.id.orderStatus, R.id.orderNumber, R.id.orderDate, R.id.orderAmount})
+        @BindViews({R.id.orderStatus, R.id.orderNumber, R.id.orderDate, R.id.orderAmount, R.id.view})
         List<TextView> textViews;
 
         public MyViewHolder(@NonNull View itemView) {

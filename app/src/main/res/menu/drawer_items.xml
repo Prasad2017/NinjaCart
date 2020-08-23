@@ -8,12 +8,27 @@
 
     <item
         android:id="@+id/cart"
-        android:icon="@drawable/basket"
+        android:icon="@drawable/addtocart"
         android:title="My Cart" />
 
     <item
         android:id="@+id/history"
         android:icon="@drawable/history"
         android:title="My Orders" />
+
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="My Account" />
+
+    <item
+        android:id="@+id/share"
+        android:icon="@drawable/ic_baseline_share_24"
+        android:title="Share" />
+
+    <item
+        android:id="@+id/rateus"
+        android:icon="@drawable/ic_baseline_rate_review_24"
+        android:title="Rate Us" />
 
 </menu>

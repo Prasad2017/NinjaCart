@@ -48,6 +48,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.mukesh.OnOtpCompletionListener;
 import com.mukesh.OtpView;
+import com.ninjacart.Extra.Common;
 import com.ninjacart.Model.LoginResponse;
 import com.ninjacart.R;
 import com.ninjacart.Retrofit.Api;
@@ -278,7 +279,18 @@ public class Login extends AppCompatActivity implements GoogleApiClient.Connecti
 
                 if (response.body().getSuccess().equalsIgnoreCase("true")) {
                     progressDialog.dismiss();
-                    Toasty.error(Login.this, ""+response.body().getMessage(), Toasty.LENGTH_SHORT).show();
+                    Toasty.success(Login.this, ""+response.body().getMessage(), Toasty.LENGTH_SHORT).show();
+                    pref = getSharedPreferences("user", Context.MODE_PRIVATE);
+                    editor = pref.edit();
+                    editor.putString("UserLogin", "UserLoginSuccessful");
+                    editor.commit();
+
+                    Common.saveUserData(Login.this, "userId", response.body().getUserId());
+
+                    Intent intent = new Intent(Login.this, MainPage.class);
+                    startActivity(intent);
+                    finishAffinity();
+
                 } else if (response.body().getSuccess().equalsIgnoreCase("false")) {
                     progressDialog.dismiss();
                     Toasty.error(Login.this, ""+response.body().getMessage(), Toasty.LENGTH_SHORT).show();
@@ -297,10 +309,10 @@ public class Login extends AppCompatActivity implements GoogleApiClient.Connecti
 
     private void sendOTP(String mobileNumber) {
 
-        HASH_KEY = (String) new AppSignatureHelper(this).getAppSignatures().get(0);
+        HASH_KEY = new AppSignatureHelper(this).getAppSignatures().get(0);
         HASH_KEY = HASH_KEY.replace("+", "%252B");
         OTP = new DecimalFormat("0000").format(new Random().nextInt(9999));
-        String message = "<#> Your  verification OTP code is "+ OTP +". Please DO NOT share this OTP with anyone.\n" + HASH_KEY;
+        String message = "<#> Your Freshroot verification OTP code is "+ OTP +". Please DO NOT share this OTP with anyone.\n" + HASH_KEY;
         String encoded_message= URLEncoder.encode(message);
         Log.e("Message", ""+encoded_message);
 
@@ -315,7 +327,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.Connecti
         requestParams.put("number", mobileNumber);
         requestParams.put("message", encoded_message);
 
-        asyncHttpClient.get("http://graminvikreta.com/androidApp/Supplier/sendSMS.php", requestParams, new AsyncHttpResponseHandler() {
+        asyncHttpClient.get("http://rssas.in/androidApp/sendSMS.php", requestParams, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 

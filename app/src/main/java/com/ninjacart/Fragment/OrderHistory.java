@@ -56,7 +56,7 @@ public class OrderHistory extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_cart_list, container, false);
+        view = inflater.inflate(R.layout.fragment_order_history, container, false);
         ButterKnife.bind(this, view);
 
         MainPage.title.setText("My Order");
@@ -99,6 +99,7 @@ public class OrderHistory extends Fragment {
 
                 AllList allList = response.body();
                 orderResponseList = allList.getOrderResponseList();
+
                 if (orderResponseList.size()>0){
 
                     progressDialog.dismiss();

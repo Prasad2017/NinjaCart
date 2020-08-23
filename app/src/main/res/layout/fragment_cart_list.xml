@@ -12,15 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/categoryRecyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="5dp"
             android:layout_alignParentTop="true"
-            android:padding="5dp"
             android:layout_above="@+id/checkout"/>
 
         <TextView
@@ -29,12 +27,17 @@
             android:layout_height="50dp"
             android:background="@color/colorPrimary"
             android:text="Checkout"
-            android:gravity="center"
+            android:gravity="center|left"
+            android:drawableEnd="@drawable/ic_baseline_arrow_right_alt_24"
+            android:drawablePadding="10dp"
+            android:drawableTint="@color/white"
+            android:paddingEnd="15dp"
+            android:paddingStart="15dp"
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
             android:fontFamily="@font/poppinsmedium"
             android:textColor="@color/white"
-            android:textSize="18sp"/>
+            android:textSize="17sp"/>
 
     </RelativeLayout>
 
@@ -45,7 +48,7 @@
         android:padding="5dp"
         android:textSize="18sp"
         android:layout_centerInParent="true"
-        android:text="No Order History Found"
+        android:text="No Product Found In Cart"
         android:textColor="@color/black"
         android:fontFamily="@font/poppinsmedium"
         android:layout_gravity="center"

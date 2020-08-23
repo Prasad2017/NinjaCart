@@ -21,12 +21,18 @@
         tools:replace="android:icon">
 
         <activity
+            android:name=".Activity.MainPage"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="InnerclassSeparator"/>
+
+        <activity
             android:name=".Activity.Login"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize"
             tools:ignore="InnerclassSeparator"/>
 
-        <activity android:name=".Activity.MainPage"
+        <activity android:name=".Activity.SplashScreen"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize"
             tools:ignore="InnerclassSeparator">

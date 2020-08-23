@@ -1,5 +1,7 @@
 package com.ninjacart.Fragment;
 
+import android.content.Context;
+import android.content.IntentSender;
 import android.os.Bundle;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -17,14 +19,28 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.andreabaccega.widget.FormEditText;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.InstallState;
+import com.google.android.play.core.install.InstallStateUpdatedListener;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.InstallStatus;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.Task;
 import com.ninjacart.Activity.MainPage;
 import com.ninjacart.Adapter.ProductAdapter;
+import com.ninjacart.Extra.Common;
 import com.ninjacart.Extra.DetectConnection;
 import com.ninjacart.Model.AllList;
 import com.ninjacart.Model.ProductResponse;
+import com.ninjacart.Model.ProfileResponse;
 import com.ninjacart.R;
 import com.ninjacart.Retrofit.Api;
 import com.ninjacart.Retrofit.ApiInterface;
@@ -41,10 +57,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.google.android.play.core.install.model.AppUpdateType.IMMEDIATE;
+
 
 public class Home extends Fragment {
 
     View view;
+    @BindView(R.id.relativeLayout)
+    RelativeLayout linearLayout;
     @BindView(R.id.productRecyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.emptyProductLayout)
@@ -56,6 +76,14 @@ public class Home extends Fragment {
     List<ProductResponse> productResponseList = new ArrayList<>();
     List<ProductResponse> searchProductResponseList = new ArrayList<>();
     public static ProductAdapter adapter;
+    List<ProfileResponse> profileResponseList = new ArrayList<>();
+    // Creates an instance of the manager.
+    private AppUpdateManager mAppUpdateManager;
+    // Returns an intent object that you use to check for an update.
+    private Task<AppUpdateInfo> appUpdateInfo;
+    private InstallStateUpdatedListener installStateUpdatedListener;
+    private int MY_REQUEST_CODE = 700;
+
 
 
     @Override
@@ -65,6 +93,23 @@ public class Home extends Fragment {
         view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
 
+        InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        in.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                if (DetectConnection.checkInternetConnection(getActivity())){
+                    getProductList();
+                    swipeRefreshLayout.setRefreshing(false);
+                } else {
+                    Toasty.warning(getActivity(), "No Internet Connection", Toasty.LENGTH_SHORT, true).show();
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+
+            }
+        });
 
         searchProduct.addTextChangedListener(new TextWatcher() {
             @Override
@@ -91,9 +136,92 @@ public class Home extends Fragment {
             }
         });
 
+
+        mAppUpdateManager = AppUpdateManagerFactory.create(getActivity());
+        appUpdateInfo = mAppUpdateManager.getAppUpdateInfo();
+        installStateUpdatedListener = new InstallStateUpdatedListener() {
+            @Override
+            public void onStateUpdate(InstallState state) {
+                if (state.installStatus() == InstallStatus.DOWNLOADED) {
+                    popupSnackbarForCompleteUpdate();
+                } else if (state.installStatus() == InstallStatus.INSTALLED) {
+                    if (mAppUpdateManager != null) {
+                        mAppUpdateManager.unregisterListener(installStateUpdatedListener);
+                    }
+
+                } else {
+                    Log.i("TAG", "InstallStateUpdatedListener: state: " + state.installStatus());
+                }
+            }
+        };
+
+        mAppUpdateManager.registerListener(installStateUpdatedListener);
+        mAppUpdateManager.getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
+
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
+
+                try {
+                    mAppUpdateManager.startUpdateFlowForResult(
+                            appUpdateInfo, AppUpdateType.FLEXIBLE, getActivity(), MY_REQUEST_CODE);
+
+                } catch (IntentSender.SendIntentException e) {
+                    e.printStackTrace();
+                }
+
+            } else if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                popupSnackbarForCompleteUpdate();
+            } else {
+                Log.e("", "checkForAppUpdateAvailability: something else");
+            }
+        });
+
+
         return view;
 
     }
+
+    private void popupSnackbarForCompleteUpdate() {
+
+        Snackbar snackbar =
+                Snackbar.make(linearLayout, "An update has just been downloaded.", Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction("Install", view -> {
+            if (mAppUpdateManager != null) {
+                mAppUpdateManager.completeUpdate();
+            }
+        });
+
+        snackbar.setActionTextColor(getResources().getColor(R.color.colorPrimary));
+        snackbar.show();
+    }
+
+
+    // Checks that the update is not stalled during 'onResume()'.
+    // However, you should execute this check at all entry points into the app.
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        mAppUpdateManager
+                .getAppUpdateInfo()
+                .addOnSuccessListener(
+                        appUpdateInfo -> {
+                            if (appUpdateInfo.updateAvailability()
+                                    == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                                // If an in-app update is already running, resume the update.
+                                try {
+                                    mAppUpdateManager.startUpdateFlowForResult(
+                                            appUpdateInfo,
+                                            IMMEDIATE,
+                                            getActivity(),
+                                            MY_REQUEST_CODE);
+                                } catch (IntentSender.SendIntentException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+    }
+
 
     private void searchProductList(String s) {
 
@@ -139,18 +267,54 @@ public class Home extends Fragment {
     public void onStart() {
         super.onStart();
         Log.e("onStart", "called");
-       // MainPage.title.setVisibility(View.VISIBLE);
         ((MainPage) getActivity()).lockUnlockDrawer(0);
+        MainPage.bottomNavigationView.getMenu().findItem(R.id.home).setChecked(true);
         if (DetectConnection.checkInternetConnection(getActivity())) {
+            getProfile();
             getProductList();
         } else {
             Toasty.warning(getActivity(), "No Internet Connection", Toasty.LENGTH_SHORT, true).show();
         }
     }
 
+    private void getProfile() {
+
+        Call<AllList> call = Api.getClient().getProfile(MainPage.userId);
+        call.enqueue(new Callback<AllList>() {
+            @Override
+            public void onResponse(Call<AllList> call, Response<AllList> response) {
+
+                AllList allList = response.body();
+                profileResponseList = allList.getProfileResponseList();
+
+                if (profileResponseList.size()>0){
+
+                    MainPage.userName = profileResponseList.get(0).getcName();
+                    MainPage.userNumber = profileResponseList.get(0).getcMobile();
+                    MainPage.userAddress = profileResponseList.get(0).getcAddress();
+
+                    Common.saveUserData(getActivity(), "userName", MainPage.userName);
+                    Common.saveUserData(getActivity(), "userNumber", MainPage.userNumber);
+                    Common.saveUserData(getActivity(), "userAddress", MainPage.userAddress);
+
+
+                } else {
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<AllList> call, Throwable t) {
+                Log.e("profileError", ""+t.getMessage());
+            }
+        });
+
+    }
+
     private void getProductList() {
 
-        Call<AllList> call = Api.getClient().getProductList("1");
+        Call<AllList> call = Api.getClient().getProductList(MainPage.userId);
         call.enqueue(new Callback<AllList>() {
             @Override
             public void onResponse(Call<AllList> call, Response<AllList> response) {

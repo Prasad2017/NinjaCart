@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".Fragment.About">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="25dp"
+        android:fontFamily="@font/poppinsbold"
+        android:textColor="@color/black"
+        android:text="About"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/gray"/>
+
+    <LinearLayout
+        android:id="@+id/aboutLayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/spacing_large"
+        android:paddingRight="@dimen/spacing_large">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:textSize="15sp"
+            android:fontFamily="@font/poppinsmedium"
+            android:text="Terms of Service"
+            android:textColor="@color/black" />
+
+        <View
+            android:layout_width="@dimen/spacing_large"
+            android:layout_height="wrap_content" />
+
+        <ImageButton
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@android:color/transparent"
+            android:tint="@color/grey_40"
+            android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+            tools:ignore="VectorDrawableCompat" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="5dp"
+        android:background="@color/gray"/>
+
+    <LinearLayout
+        android:id="@+id/logoutLayout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/spacing_large"
+        android:paddingRight="@dimen/spacing_large">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"
+                android:textSize="15sp"
+                android:fontFamily="@font/poppinsmedium"
+                android:text="App Version"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppinsregular"
+                android:text="V1.0.0 Live"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="@dimen/spacing_large"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="5dp"
+        android:background="@color/gray"/>
+
+</LinearLayout>

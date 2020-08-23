@@ -44,6 +44,7 @@ public class MyCart extends Fragment {
     RecyclerView recyclerView;
     @BindView(R.id.noCategorytxt)
     TextView noCategorytxt;
+    public  static TextView checkOut;
     @BindView(R.id.linearLayout)
     RelativeLayout linearLayout;
     List<CartResponse> cartResponseList = new ArrayList<>();
@@ -61,6 +62,8 @@ public class MyCart extends Fragment {
 
         InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         in.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+        checkOut = view.findViewById(R.id.checkout);
 
 
         return view;
@@ -81,7 +84,6 @@ public class MyCart extends Fragment {
     public void onStart() {
         super.onStart();
         Log.e("onStart", "called");
-        // MainPage.title.setVisibility(View.VISIBLE);
         ((MainPage) getActivity()).lockUnlockDrawer(1);
         if (DetectConnection.checkInternetConnection(getActivity())) {
             getCartList();

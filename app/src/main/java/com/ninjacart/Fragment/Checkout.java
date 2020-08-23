@@ -52,6 +52,7 @@ public class Checkout extends Fragment {
 
             formEditTexts.get(0).setText(MainPage.userName);
             formEditTexts.get(1).setText(MainPage.userNumber);
+            formEditTexts.get(2).setText(MainPage.userAddress);
             formEditTexts.get(3).setText(""+MyCart.adapter.totalAmount);
 
         } catch (Exception e){
@@ -74,7 +75,7 @@ public class Checkout extends Fragment {
                 progressDialog.show();
                 progressDialog.setCancelable(false);
 
-                Call<LoginResponse> call = Api.getClient().placeOrder(MainPage.userId, ""+MyCart.adapter.totalAmount);
+                Call<LoginResponse> call = Api.getClient().placeOrder(MainPage.userId, ""+MyCart.adapter.totalAmount, MainPage.userName, MainPage.userNumber, formEditTexts.get(2).getText().toString());
                 call.enqueue(new Callback<LoginResponse>() {
                     @Override
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {

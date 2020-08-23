@@ -41,7 +41,10 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("/androidApp/FinalOrder.php")
     Call<LoginResponse> placeOrder(@Field("userId") String userId,
-                                   @Field("subAmount") String subAmount);
+                                   @Field("subAmount") String subAmount,
+                                   @Field("customerName") String customerName,
+                                   @Field("customerNumber") String customerNumber,
+                                   @Field("billingAddress") String billingAddress);
 
 
     @GET("/androidApp/getOrderList.php")
@@ -53,6 +56,21 @@ public interface ApiInterface {
                                       @Field("customerName") String customerName,
                                       @Field("customerMobile") String customerMobile,
                                       @Field("customerAddress") String customerAddress);
+
+
+    @GET("/androidApp/getProfile.php")
+    Call<AllList> getProfile(@Query("userId") String userId);
+
+
+    @GET("/androidApp/getOrderDetails.php")
+    Call<AllList> orderDetails(@Query("orderId") String orderId);
+
+
+    @FormUrlEncoded
+    @POST("/androidApp/updateCart.php")
+    Call<LoginResponse> updateCart(@Field("productId") String productId,
+                                   @Field("userId") String userId,
+                                   @Field("quantity") String quantity);
 
 
 }

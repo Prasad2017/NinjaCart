@@ -13,11 +13,16 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.andreabaccega.widget.FormEditText;
 import com.ninjacart.Activity.MainPage;
+import com.ninjacart.Extra.Common;
 import com.ninjacart.Extra.DetectConnection;
+import com.ninjacart.Model.AllList;
 import com.ninjacart.Model.LoginResponse;
+import com.ninjacart.Model.ProductResponse;
+import com.ninjacart.Model.ProfileResponse;
 import com.ninjacart.R;
 import com.ninjacart.Retrofit.Api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindViews;
@@ -35,6 +40,7 @@ public class Profile extends Fragment {
     View view;
     @BindViews({R.id.customerName, R.id.customerMobile, R.id.customerAddress})
     List<FormEditText> formEditTexts;
+    List<ProfileResponse> profileResponseList = new ArrayList<>();
 
 
     @Override
@@ -98,9 +104,48 @@ public class Profile extends Fragment {
         // MainPage.title.setVisibility(View.VISIBLE);
         ((MainPage) getActivity()).lockUnlockDrawer(1);
         if (DetectConnection.checkInternetConnection(getActivity())) {
-
+            getProfile();
         } else {
             Toasty.warning(getActivity(), "No Internet Connection", Toasty.LENGTH_SHORT, true).show();
         }
+    }
+
+    private void getProfile() {
+
+        Call<AllList> call = Api.getClient().getProfile(MainPage.userId);
+        call.enqueue(new Callback<AllList>() {
+            @Override
+            public void onResponse(Call<AllList> call, Response<AllList> response) {
+
+                AllList allList = response.body();
+                profileResponseList = allList.getProfileResponseList();
+
+                if (profileResponseList.size()>0){
+
+                    MainPage.userName = profileResponseList.get(0).getcName();
+                    MainPage.userNumber = profileResponseList.get(0).getcMobile();
+                    MainPage.userAddress = profileResponseList.get(0).getcAddress();
+
+                    formEditTexts.get(0).setText(MainPage.userName);
+                    formEditTexts.get(1).setText(MainPage.userNumber);
+                    formEditTexts.get(2).setText(MainPage.userAddress);
+
+                    formEditTexts.get(0).setSelection(formEditTexts.get(0).getText().toString().length());
+                    formEditTexts.get(1).setSelection(formEditTexts.get(1).getText().toString().length());
+                    formEditTexts.get(2).setSelection(formEditTexts.get(2).getText().toString().length());
+
+
+                } else {
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<AllList> call, Throwable t) {
+                Log.e("profileError", ""+t.getMessage());
+            }
+        });
+
     }
 }

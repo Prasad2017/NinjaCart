@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,9 +59,27 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         ProductResponse productResponse = productResponseList.get(position);
 
         holder.textView.get(0).setText(productResponseList.get(position).getProductName());
-        holder.textView.get(1).setText(MainPage.currency +" "+productResponseList.get(position).getProductSellPrice()+"/"+productResponseList.get(position).getProductUnit());
+        holder.textView.get(1).setText(MainPage.currency +" "+productResponseList.get(position).getProductSellPrice());
         holder.textView.get(2).setText(productResponseList.get(position).getMinPurchaseQty()+" "+productResponseList.get(position).getProductUnit());
         holder.textView.get(4).setText(""+productResponseList.get(position).getQty());
+        holder.textView.get(5).setText(MainPage.currency+" "+Double.parseDouble(productResponseList.get(position).getQty()) * Double.parseDouble(productResponseList.get(position).getProductSellPrice()));
+        holder.textView.get(6).setText(""+productResponseList.get(position).getQty());
+        if (Double.parseDouble(productResponseList.get(position).getQty())>1){
+            holder.amtQtyLinearLayout.setVisibility(View.VISIBLE);
+        } else {
+            holder.amtQtyLinearLayout.setVisibility(View.GONE);
+        }
+
+        double discountPercentage = Double.parseDouble(productResponseList.get(position).getProductMrp()) - Double.parseDouble(productResponseList.get(position).getProductSellPrice());
+        Log.d("percentage", discountPercentage + "");
+        discountPercentage = (discountPercentage / Double.parseDouble(productResponseList.get(position).getProductSellPrice())) * 100;
+        if ((int) Math.round(discountPercentage) > 0) {
+            holder.textView.get(3).setVisibility(View.VISIBLE);
+            holder.textView.get(3).setText(((int) Math.round(discountPercentage) + "% Off"));
+        } else {
+            holder.textView.get(3).setText("0% Off");
+            holder.textView.get(3).setVisibility(View.GONE);
+        }
 
         try{
 
@@ -85,6 +104,27 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
                 }else if (quantity == Integer.parseInt(productResponseList.get(position).getMinPurchaseQty())){
                   //  quantity = Integer.parseInt(productResponseList.get(position).getMinPurchaseQty());
                     quantity = 0;
+
+                    Call<LoginResponse> call = Api.getClient().deleteCart(productResponseList.get(position).getProductId(), MainPage.userId);
+                    call.enqueue(new Callback<LoginResponse>() {
+                        @Override
+                        public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+
+                            if (response.body().getSuccess().equalsIgnoreCase("true")){
+                                Toasty.normal(context, ""+response.body().getMessage(), Toasty.LENGTH_SHORT).show();
+                                ((MainPage) context).loadFragment(new Home(), false);
+                            } else if (response.body().getSuccess().equalsIgnoreCase("false")){
+                                Toasty.normal(context, ""+response.body().getMessage(), Toasty.LENGTH_SHORT).show();
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<LoginResponse> call, Throwable t) {
+                            Log.e("cartError", ""+t.getMessage());
+                        }
+                    });
+
                 } else {
                     quantity = Integer.parseInt(holder.textView.get(4).getText().toString().trim());
                     quantity = quantity - 1;
@@ -97,13 +137,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
                     holder.textView.get(4).setText(""+quantity);
                     Home.adapter.notifyDataSetChanged();
 
-                    Call<LoginResponse> call = Api.getClient().deleteCart(productResponseList.get(position).getProductId(), "1");
+                    Call<LoginResponse> call = Api.getClient().updateCart(productResponseList.get(position).getProductId(), MainPage.userId, ""+quantity);
                     call.enqueue(new Callback<LoginResponse>() {
                         @Override
                         public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
 
                             if (response.body().getSuccess().equalsIgnoreCase("true")){
                                 Toasty.normal(context, ""+response.body().getMessage(), Toasty.LENGTH_SHORT).show();
+                                Home.adapter.notifyDataSetChanged();
+                                Home.adapter.notifyItemChanged(Integer.parseInt(productResponseList.get(position).getProductId()));
+                                ((MainPage) context).loadFragment(new Home(), false);
                             } else if (response.body().getSuccess().equalsIgnoreCase("false")){
                                 Toasty.normal(context, ""+response.body().getMessage(), Toasty.LENGTH_SHORT).show();
                             }
@@ -146,7 +189,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
 
                 if (quantity>=Integer.parseInt(productResponseList.get(position).getMinPurchaseQty())){
 
-                    Call<LoginResponse> call = Api.getClient().addToCart(productResponseList.get(position).getProductId(), "1", ""+quantity);
+                    Call<LoginResponse> call = Api.getClient().addToCart(productResponseList.get(position).getProductId(), MainPage.userId, ""+quantity);
                     call.enqueue(new Callback<LoginResponse>() {
                         @Override
                         public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
@@ -188,11 +231,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        @BindViews({R.id.productName, R.id.productSellPrice, R.id.productMrpPrice, R.id.productOffer, R.id.quantity})
+        @BindViews({R.id.productName, R.id.productSellPrice, R.id.productMrpPrice, R.id.productOffer, R.id.quantity, R.id.totalPrice, R.id.qty})
         List<TextView> textView;
 
         @BindViews({R.id.productImage, R.id.minus, R.id.add})
         List<ImageView> imageViews;
+
+        @BindView(R.id.amtQtyLinearLayout)
+        LinearLayout amtQtyLinearLayout;
 
 
         public MyViewHolder(@NonNull View itemView) {

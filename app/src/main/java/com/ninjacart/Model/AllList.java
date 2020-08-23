@@ -15,6 +15,14 @@ public class AllList {
     @SerializedName("orderResponse")
     List<OrderResponse> orderResponseList;
 
+    @SerializedName("profileResponse")
+    List<ProfileResponse> profileResponseList;
+
+    @SerializedName("orderDetailsResponse")
+    List<OrderDetailsResponse> orderDetailsResponseList;
+
+
+
 
     public List<ProductResponse> getProductResponseList() {
         return productResponseList;
@@ -38,5 +46,21 @@ public class AllList {
 
     public void setOrderResponseList(List<OrderResponse> orderResponseList) {
         this.orderResponseList = orderResponseList;
+    }
+
+    public List<ProfileResponse> getProfileResponseList() {
+        return profileResponseList;
+    }
+
+    public void setProfileResponseList(List<ProfileResponse> profileResponseList) {
+        this.profileResponseList = profileResponseList;
+    }
+
+    public List<OrderDetailsResponse> getOrderDetailsResponseList() {
+        return orderDetailsResponseList;
+    }
+
+    public void setOrderDetailsResponseList(List<OrderDetailsResponse> orderDetailsResponseList) {
+        this.orderDetailsResponseList = orderDetailsResponseList;
     }
 }

@@ -1,6 +1,8 @@
 package com.ninjacart.Activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
@@ -24,6 +26,7 @@ import com.ninjacart.Extra.Common;
 import com.ninjacart.Fragment.MyCart;
 import com.ninjacart.Fragment.Home;
 import com.ninjacart.Fragment.OrderHistory;
+import com.ninjacart.Fragment.Setting;
 import com.ninjacart.R;
 
 import butterknife.BindView;
@@ -35,9 +38,9 @@ public class MainPage extends AppCompatActivity {
 
     public static ImageView menu, back;
     public static DrawerLayout drawerLayout;
-    public static TextView title, cartCount;
+    public static TextView title, userNameTxt, userMobileNumberTxt;
     public static LinearLayout toolbarContainer;
-    public static String userId, cartId, currency = "₹", userName, userNumber;
+    public static String userId, currency = "₹", userName, userNumber, userAddress;
     boolean doubleBackToExitPressedOnce = false;
     @BindView(R.id.navigationView)
     NavigationView navigationView;
@@ -55,9 +58,18 @@ public class MainPage extends AppCompatActivity {
         initViews();
 
         userId = Common.getSavedUserData(MainPage.this, "userId");
-
+        userName = Common.getSavedUserData(MainPage.this, "userName");
+        userNumber = Common.getSavedUserData(MainPage.this, "userNumber");
 
         loadFragment(new Home(), false);
+
+        NavigationView navigationView = findViewById(R.id.navigationView);
+        View header = navigationView.getHeaderView(0);
+        userNameTxt = header.findViewById(R.id.userName);
+        userMobileNumberTxt = header.findViewById(R.id.userMobileNumber);
+
+        userNameTxt.setText(userName);
+        userMobileNumberTxt.setText(userNumber);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -73,6 +85,20 @@ public class MainPage extends AppCompatActivity {
 
                     case R.id.history:
                         loadFragment(new OrderHistory(), true);
+                        break;
+
+                    case R.id.profile:
+                        loadFragment(new Setting(), true);
+                        break;
+
+                    case R.id.share:
+                    case R.id.rateus:
+                        // perform click on Rate Category
+                        try {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
+                        } catch (android.content.ActivityNotFoundException anfe) {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
+                        }
                         break;
 
                 }
@@ -94,6 +120,9 @@ public class MainPage extends AppCompatActivity {
                     case R.id.history:
                         loadFragment(new OrderHistory(), true);
                         break;
+                    case R.id.profile:
+                        loadFragment(new Setting(), true);
+                        break;
                 }
                 return true;
             }
@@ -108,8 +137,8 @@ public class MainPage extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawer_layout);
         title = findViewById(R.id.title);
-        menu = (ImageView) findViewById(R.id.menu);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        menu = findViewById(R.id.menu);
+        progressBar = findViewById(R.id.progressBar);
         back = findViewById(R.id.back);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
