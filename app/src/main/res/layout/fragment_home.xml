@@ -14,32 +14,10 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.andreabaccega.widget.FormEditText
-            android:id="@+id/searchProduct"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:hint="Search any product"
-            android:drawablePadding="10dp"
-            android:singleLine="true"
-            android:imeOptions="actionDone"
-            android:drawableStart="@drawable/ic_baseline_search_24"
-            android:textColor="@color/black"
-            android:fontFamily="@font/poppinslight"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="7dp"
-            android:background="@drawable/edittextborder"
-            android:backgroundTint="@color/gray"/>
-
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_below="@+id/searchProduct"
             android:id="@+id/productRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:scrollbars="none" />
 
         <LinearLayout

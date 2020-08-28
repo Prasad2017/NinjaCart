@@ -27,6 +27,11 @@
         android:title="Share" />
 
     <item
+        android:id="@+id/callus"
+        android:icon="@drawable/ic_baseline_phone_24"
+        android:title="Call Us (+91 7666017188)" />
+
+    <item
         android:id="@+id/rateus"
         android:icon="@drawable/ic_baseline_rate_review_24"
         android:title="Rate Us" />

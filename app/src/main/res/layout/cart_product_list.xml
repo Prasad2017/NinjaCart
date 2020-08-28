@@ -180,7 +180,7 @@
         android:id="@+id/totalAmount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -216,25 +216,24 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/divider1"
                 android:layout_marginTop="10dp"
-                android:paddingLeft="5dp"
-                android:visibility="gone"
-                android:fontFamily="@font/poppinsmedium"
-                android:text="Subtotal (1 items) : "
-                android:textColor="@color/black"
-                android:textSize="17sp" />
+                android:fontFamily="@font/poppinsregular"
+                android:text="Sub total "
+                android:textColor="@color/light_black"
+                android:textSize="13dp"
+                android:visibility="visible" />
 
             <TextView
                 android:id="@+id/price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/txtPrice"
-                android:visibility="gone"
+                android:visibility="visible"
+                android:layout_alignParentEnd="true"
                 android:layout_below="@+id/divider1"
                 android:layout_marginTop="10dp"
                 android:text="$346"
-                android:fontFamily="@font/poppinsmedium"
-                android:textColor="@color/red_900"
-                android:textSize="17sp" />
+                android:fontFamily="@font/poppinsregular"
+                android:textColor="@color/light_black"
+                android:textSize="13dp" />
 
             <TextView
                 android:id="@+id/txtDelivery"
@@ -243,8 +242,8 @@
                 android:layout_below="@+id/txtPrice"
                 android:layout_marginTop="10dp"
                 android:text="Delivery"
-                android:textColor="@color/black"
-                android:visibility="gone"
+                android:fontFamily="@font/poppinsregular"
+                android:textColor="@color/light_black"
                 android:textSize="13sp" />
 
             <TextView
@@ -253,9 +252,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/txtPrice"
+                android:fontFamily="@font/poppinsregular"
                 android:layout_marginTop="10dp"
-                android:textColor="@color/black"
-                android:visibility="gone"
+                android:textColor="@color/light_black"
                 android:textSize="13sp" />
 
             <TextView
@@ -287,7 +286,7 @@
                 android:layout_below="@+id/tax"
                 android:ems="1"
                 android:singleLine="true"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:text="...................................................................................................................................."
                 android:textSize="15sp" />
 
@@ -296,10 +295,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/dotLine"
                 android:layout_marginTop="10dp"
-                android:text="Sub Total Amount"
-                android:visibility="gone"
+                android:text="Total Amount"
+                android:fontFamily="@font/poppinsregular"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/amountPayable"
@@ -309,9 +308,10 @@
                 android:layout_below="@+id/dotLine"
                 android:layout_marginTop="10dp"
                 android:text="$356"
-                android:visibility="gone"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:fontFamily="@font/poppinsregular"
+                android:textColor="@color/red_900"
+                android:textSize="16dp" />
+
         </RelativeLayout>
 
 
@@ -361,25 +361,28 @@
 
         </LinearLayout>
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             android:orientation="horizontal"
-            android:padding="5dp">
+            android:background="@color/gray"
+            android:padding="7dp">
 
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
+                android:layout_marginEnd="5dp"
                 android:src="@drawable/security_icon" />
 
             <TextView
                 android:id="@+id/txtGurantee"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="15dp"
                 android:gravity="center"
                 android:textColor="@color/black"
                 android:fontFamily="@font/poppinsmedium"

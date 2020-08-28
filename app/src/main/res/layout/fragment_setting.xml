@@ -51,7 +51,7 @@
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
                         android:layout_gravity="center"
-                        android:hint="Prasad Sawant"
+                        android:hint=""
                         android:textColor="@color/black"
                         android:textColorHint="@color/black"
                         android:textSize="22sp" />
@@ -67,7 +67,7 @@
                         android:paddingBottom="5dp"
                         android:layout_marginTop="3dp"
                         android:layout_gravity="center"
-                        android:hint="sawantp500@gmail.com"
+                        android:hint=""
                         android:textColor="@color/black"
                         android:textColorHint="@color/black"
                         android:textSize="13sp" />

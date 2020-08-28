@@ -35,7 +35,7 @@
                     android:textColor="@color/black"
                     android:layout_marginStart="15dp"
                     android:fontFamily="@font/poppinsregular"
-                    android:textSize="17sp"/>
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:id="@+id/orderNumber"
@@ -77,7 +77,7 @@
                     android:textColor="@color/black"
                     android:layout_marginStart="15dp"
                     android:fontFamily="@font/poppinsregular"
-                    android:textSize="17sp"/>
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:id="@+id/orderDate"
@@ -153,21 +153,24 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
                     android:text="Order Summery"
-                    android:layout_marginTop="5dp"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="25dp"
                     android:layout_alignParentStart="true"
-                    android:textColor="@color/black"
-                    android:layout_marginStart="15dp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/blue_button_background"
+                    android:backgroundTint="@color/blue_700"
                     android:fontFamily="@font/poppinsmedium"
                     android:textSize="17sp"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="3dp">
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginTop="8dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -199,7 +202,8 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="3dp">
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -230,7 +234,8 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="3dp">
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -245,6 +250,7 @@
                         android:textSize="15dp"/>
 
                     <TextView
+                        android:id="@+id/deliveryCharge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -287,7 +293,7 @@
                         android:text="₹ 0.00"
                         android:layout_alignParentEnd="true"
                         android:textColor="@color/black"
-                        android:fontFamily="@font/poppinsmedium"
+                        android:fontFamily="@font/poppinsregular"
                         android:textSize="17sp"/>
 
                 </RelativeLayout>
@@ -309,18 +315,17 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_margin="3dp">
+                android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="10dp"
+                android:paddingStart="25dp"
                 android:paddingEnd="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="15dp"
                 android:text="Order Details"
-                android:textColor="@color/black"
+                android:background="@drawable/blue_button_background"
+                android:backgroundTint="@color/blue_700"
+                android:textColor="@color/white"
                 android:fontFamily="@font/poppinsmedium"
                 android:textSize="17sp"/>
 
@@ -329,6 +334,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentTop="true"
+                android:padding="5dp"
                 android:layout_above="@+id/checkout"/>
 
             </LinearLayout>

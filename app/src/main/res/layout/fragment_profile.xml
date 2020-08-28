@@ -28,6 +28,44 @@
             android:textColorHint="@color/light_black">
 
             <com.andreabaccega.widget.FormEditText
+                android:id="@+id/shopName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/light_black"
+                android:fontFamily="@font/poppinsregular"
+                android:hint="Shop Name"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:paddingStart="15dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingEnd="10dp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/light_black"
+                android:textSize="15sp"
+                tools:ignore="HardcodedText"
+                whatever:emptyErrorString="Please Fill This"
+                whatever:testErrorString="Enter Valid Shop Name" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            whatever:boxCornerRadiusBottomEnd="5dp"
+            whatever:boxCornerRadiusBottomStart="5dp"
+            whatever:boxCornerRadiusTopEnd="5dp"
+            whatever:boxCornerRadiusTopStart="5dp"
+            android:gravity="center"
+            whatever:boxStrokeColor="@color/light_black"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:textColorHint="@color/light_black">
+
+            <com.andreabaccega.widget.FormEditText
                 android:id="@+id/customerName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -77,6 +115,7 @@
                 android:inputType="numberDecimal"
                 android:digits="0123456789"
                 android:paddingStart="15dp"
+                android:enabled="false"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:paddingEnd="10dp"
