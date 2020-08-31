@@ -7,8 +7,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white"
     tools:context=".Activity.Login">
+
+    <com.flaviofaria.kenburnsview.KenBurnsView
+        android:id="@+id/viewCard"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/background_image_with_alpha"
+        app:layout_constraintVertical_bias="1.0" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,7 +47,7 @@
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="Enter your registered mobile number and we will send you an OTP on Mobile Number"
-                android:textColor="@color/light_black"
+                android:textColor="@color/white"
                 android:textSize="12sp"
                 android:textStyle="italic" />
 
@@ -153,10 +159,10 @@
                 android:layout_marginTop="25dp"
                 android:gravity="center"
                 android:inputType="number"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 app:itemCount="4"
-                app:lineColor="@color/black"
+                app:lineColor="@color/white"
                 app:viewType="line" />
 
             <TextView

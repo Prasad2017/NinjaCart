@@ -1,6 +1,7 @@
 package com.freshroot.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,10 +56,12 @@ public class OrderDetailsProductAdapter extends RecyclerView.Adapter<OrderDetail
             e.printStackTrace();
         }
 
+        Log.e("Pic", "http://www.rssas.in/market/uploads/product/"+orderDetailsResponseList.get(position).getProductPhoto());
+
         try{
 
             Picasso.with(context)
-                    .load(""+orderDetailsResponseList.get(position).getProductPhoto())
+                    .load("http://www.rssas.in/market/uploads/product/"+orderDetailsResponseList.get(position).getProductPhoto())
                     .placeholder(R.drawable.defaultimage)
                     .fit()
                     .into(holder.imageView);

@@ -143,7 +143,17 @@ public class Login extends AppCompatActivity implements GoogleApiClient.Connecti
                             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                         }
 
-                        login();
+                        if (otpCode != null) {
+
+                            if (otpCode.equalsIgnoreCase(OTP)) {
+                                login();
+                            } else {
+                                Toasty.error(Login.this, "OTP Not Match", Toasty.LENGTH_LONG, true).show();
+                            }
+
+                        } else {
+                            Toasty.warning(Login.this, "Please Enter OTP", Toasty.LENGTH_LONG, true).show();
+                        }
 
                     } else {
 

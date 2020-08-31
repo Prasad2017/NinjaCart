@@ -24,6 +24,7 @@ public class Api {
                     .connectTimeout(1, TimeUnit.MINUTES)
                     .readTimeout(1, TimeUnit.MINUTES)
                     .addInterceptor(logging)
+                    .retryOnConnectionFailure(true)
                     .build();
 
             retrofit = new Retrofit.Builder()

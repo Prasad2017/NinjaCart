@@ -79,10 +79,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
         holder.textView.get(0).setText(cartResponseList.get(position).getProductName());
         holder.textView.get(1).setText(MainPage.currency +" "+cartResponseList.get(position).getProductSellPrice());
-        holder.textView.get(2).setText(cartResponseList.get(position).getProductMrp()+"/"+cartResponseList.get(position).getProductUnit());
+        holder.textView.get(2).setText(cartResponseList.get(position).getMinPurchaseQty()+" "+cartResponseList.get(position).getProductUnit());
         holder.textView.get(4).setText(""+cartResponseList.get(position).getProductQuantity());
 
-        double discountPercentage = Double.parseDouble(cartResponseList.get(position).getProductMrp()) - Double.parseDouble(cartResponseList.get(position).getProductSellPrice());
+      /*  double discountPercentage = Double.parseDouble(cartResponseList.get(position).getProductMrp()) - Double.parseDouble(cartResponseList.get(position).getProductSellPrice());
         Log.d("percentage", discountPercentage + "");
         discountPercentage = (discountPercentage / Double.parseDouble(cartResponseList.get(position).getProductSellPrice())) * 100;
         if ((int) Math.round(discountPercentage) > 0) {
@@ -91,12 +91,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         } else {
             holder.textView.get(3).setText("0% Off");
             holder.textView.get(3).setVisibility(View.GONE);
-        }
+        }*/
 
         try{
 
             Picasso.with(context)
-                    .load("http://www.rssas.in/"+cartResponseList.get(position).getProductPhoto())
+                    .load("http://www.rssas.in/market/uploads/product/"+cartResponseList.get(position).getProductPhoto())
                     .fit()
                     .placeholder(R.drawable.defaultimage)
                     .into(holder.imageViews.get(0));
@@ -109,7 +109,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             @Override
             public void onClick(View view) {
 
-                int quantity = Integer.parseInt(holder.textView.get(4).getText().toString().trim()) - Integer.parseInt(cartResponseList.get(position).getMinPurchaseQty());
+                int quantity = Integer.parseInt(holder.textView.get(4).getText().toString().trim().replace(".00", "")) - Integer.parseInt(cartResponseList.get(position).getMinPurchaseQty().replace(".00", ""));
 
                 if (quantity < Integer.parseInt(cartResponseList.get(position).getMinPurchaseQty())){
 
@@ -168,15 +168,15 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             @Override
             public void onClick(View view) {
 
-                int quantity = Integer.parseInt(holder.textView.get(4).getText().toString().trim());
+                int quantity = Integer.parseInt(holder.textView.get(4).getText().toString().trim().replace(".00", ""));
                 if (quantity<1){
-                    quantity = Integer.parseInt(cartResponseList.get(position).getMinPurchaseQty());
+                    quantity = Integer.parseInt(cartResponseList.get(position).getMinPurchaseQty().replace(".00", ""));
                     quantity = quantity;
                 }else if (quantity == Integer.parseInt(cartResponseList.get(position).getMinPurchaseQty())){
                     quantity = Integer.parseInt(cartResponseList.get(position).getMinPurchaseQty());
                     quantity = quantity + Integer.parseInt(cartResponseList.get(position).getMinPurchaseQty());
                 } else {
-                    quantity = Integer.parseInt(holder.textView.get(4).getText().toString().trim());
+                    quantity = Integer.parseInt(holder.textView.get(4).getText().toString().trim().replace(".00", ""));
                     quantity = quantity + Integer.parseInt(cartResponseList.get(position).getMinPurchaseQty());
                 }
 
